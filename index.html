@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Lab Partner — Intelligent Academic Laboratory Companion</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            },
+            tech: {
+              50: '#f8fafc',
+              800: '#1e293b',
+              900: '#0f172a',
+              950: '#020617',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .glass-card:hover {
+      border-color: rgba(52, 211, 153, 0.3);
+      box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.15);
+    }
+    .glow-dot {
+      box-shadow: 0 0 12px #22c55e;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-[#0b0f17] text-slate-100 font-sans antialiased min-h-screen selection:bg-emerald-500 selection:text-white">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <i data-lucide="flask-conical" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">Virtual Lab Partner</span>
+            <span class="px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-full">AI Academic Companion</span>
+          </div>
+          <p class="text-[11px] text-slate-400 hidden sm:block">Guiding Students from Lab Preparation to Final Results</p>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#about" class="hover:text-emerald-400 transition-colors">About</a>
+        <a href="#core-modules" class="hover:text-emerald-400 transition-colors">7 Core Modules</a>
+        <a href="#interactive-suite" class="hover:text-emerald-400 transition-colors">Interactive Suite</a>
+        <a href="#workflow" class="hover:text-emerald-400 transition-colors">Workflow</a>
+        <a href="#architecture" class="hover:text-emerald-400 transition-colors">Architecture</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700/80 text-xs text-slate-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 glow-dot animate-pulse"></span>
+          <span class="font-mono text-emerald-400">localhost:8080</span>
+        </div>
+        <a href="#interactive-suite" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md shadow-emerald-900/40 transition-all">
+          <i data-lucide="play" class="w-3.5 h-3.5"></i>
+          <span>Live Demo</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-12 pb-20 overflow-hidden border-b border-slate-800/60">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(16,185,129,0.15),rgba(255,255,255,0))]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300 mb-6">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-400"></i>
+        <span>Transforming Engineering & Scientific Practical Education</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        Your Comprehensive <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Virtual Project Partner</span> for the Laboratory
+      </h1>
+
+      <p class="mt-6 text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
+        Empowering students from pre-lab briefing to post-lab viva voce. Eliminate guesswork, troubleshoot physical setups with computer vision, capture real-time observations, and resolve mistakes before they blow components.
+      </p>
+
+      <!-- Quick Metrics Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
+        <div class="glass-card p-4 rounded-xl text-left border-l-4 border-emerald-500">
+          <div class="text-2xl font-bold text-white font-mono">7 Modules</div>
+          <div class="text-xs text-slate-400 mt-1">Full End-to-End Cycle</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl text-left border-l-4 border-cyan-500">
+          <div class="text-2xl font-bold text-white font-mono">Zero Smoke</div>
+          <div class="text-xs text-slate-400 mt-1">AI Setup & Pinout Validation</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl text-left border-l-4 border-amber-500">
+          <div class="text-2xl font-bold text-white font-mono">Mistake Forensics</div>
+          <div class="text-xs text-slate-400 mt-1">Resolutions & Gap Tracking</div>
+        </div>
+        <div class="glass-card p-4 rounded-xl text-left border-l-4 border-purple-500">
+          <div class="text-2xl font-bold text-white font-mono">Viva Predictor</div>
+          <div class="text-xs text-slate-400 mt-1">Tailored Examiner Simulation</div>
+        </div>
+      </div>
+
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <a href="#about" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-medium text-sm flex items-center gap-2 transition">
+          <i data-lucide="book-open" class="w-4 h-4 text-emerald-400"></i>
+          Read Purpose & Overview
+        </a>
+        <a href="#core-modules" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-sm flex items-center gap-2 shadow-lg shadow-emerald-900/30 transition">
+          <i data-lucide="layout-grid" class="w-4 h-4"></i>
+          Explore the 7 Core Modules
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: About the Website -->
+  <section id="about" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="h-px bg-emerald-500/40 w-12"></div>
+      <span class="text-xs uppercase font-mono tracking-widest text-emerald-400 font-semibold">Mission & Scope</span>
+    </div>
+    <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">About the Website</h2>
+    <p class="mt-3 text-slate-400 max-w-3xl text-base">
+      A purpose-built digital workbench engineered to bridge the intimidating gulf between theoretical textbook physics/engineering and physical laboratory execution.
+    </p>
+
+    <div class="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Pillar 1 -->
+      <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+          <i data-lucide="compass" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">End-to-End Lab Guidance</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          From the moment a student receives their assignment sheet until their final lab report is submitted and defended, the platform guides them through preparation, apparatus safety, wiring validation, data capture, and calculations.
+        </p>
+        <ul class="mt-4 space-y-2 text-xs text-slate-400">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Eliminates pre-lab anxiety & confusion</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Clear contextual apparatus explanations</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Validated experimental procedures</li>
+        </ul>
+      </div>
+
+      <!-- Pillar 2 -->
+      <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+        <div class="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+          <i data-lucide="wrench" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">Making Complex Projects Easier</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Deconstructs intimidating multi-stage engineering projects and laboratory practicums into manageable, modular, bite-sized phases. Interactive checkpoints guarantee hardware safety before applying power.
+        </p>
+        <ul class="mt-4 space-y-2 text-xs text-slate-400">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-400"></i> Dynamic Bill-of-Materials & pinout maps</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-400"></i> Photo-based visual breadboard verification</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-400"></i> Automated observation table formatting</li>
+        </ul>
+      </div>
+
+      <!-- Pillar 3 -->
+      <div class="glass-card p-6 rounded-2xl relative overflow-hidden group">
+        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+          <i data-lucide="user-check" class="w-6 h-6"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white mb-2">An Active Virtual Project Partner</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Not just a passive wiki, but an active, responsive collaborator. When a circuit fails, it provides root-cause forensics. When preparing for examinations, it interrogates students on the exact mistakes they made in their journal.
+        </p>
+        <ul class="mt-4 space-y-2 text-xs text-slate-400">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> Mistake journal failure forensics</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> Personalized Viva Voce question predictor</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> Longitudinal learning gap analytics</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Student Lab Journey Timeline -->
+    <div class="mt-12 glass-panel p-6 sm:p-8 rounded-2xl">
+      <h4 class="text-base font-semibold text-slate-200 mb-6 flex items-center gap-2">
+        <i data-lucide="milestone" class="w-4 h-4 text-emerald-400"></i>
+        The Continuous Student Journey Through the Platform
+      </h4>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+          <div class="text-xs font-mono text-emerald-400 font-semibold mb-1">01. PRE-LAB</div>
+          <div class="font-bold text-white text-sm">Selection & Components</div>
+          <p class="text-xs text-slate-400 mt-2">Upload project details, review datasheets, explore pinouts, verify safety prerequisites.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+          <div class="text-xs font-mono text-teal-400 font-semibold mb-1">02. IN-LAB</div>
+          <div class="font-bold text-white text-sm">Process & Step Guide</div>
+          <p class="text-xs text-slate-400 mt-2">Execute sequential instructions, capture setup photos, run safety checkpoints.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+          <div class="text-xs font-mono text-amber-400 font-semibold mb-1">03. TROUBLESHOOT</div>
+          <div class="font-bold text-white text-sm">Mistake Journal</div>
+          <p class="text-xs text-slate-400 mt-2">Log wiring faults, short circuits, or erratic readings; get root-cause resolutions immediately.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800">
+          <div class="text-xs font-mono text-purple-400 font-semibold mb-1">04. POST-LAB & EXAM</div>
+          <div class="font-bold text-white text-sm">After Lab, Viva & Progress</div>
+          <p class="text-xs text-slate-400 mt-2">Plot graphs, compute error %, simulate examiner viva questions, and track long-term skill gaps.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Key Features (All 7 Core Modules Breakdown) -->
+  <section id="core-modules" class="py-20 bg-slate-900/50 border-y border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="h-px bg-emerald-500/40 w-12"></div>
+        <span class="text-xs uppercase font-mono tracking-widest text-emerald-400 font-semibold">Comprehensive Breakdown</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Key Features: The 7 Core Modules</h2>
+      <p class="mt-3 text-slate-400 max-w-3xl text-base">
+        A deep breakdown of each module's architecture, functional responsibilities, inputs, outputs, and student impact.
+      </p>
+
+      <div class="mt-12 space-y-8">
+
+        <!-- Module 1: Project Selection -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border-l-4 border-emerald-500">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">MODULE 01</span>
+                <h3 class="text-2xl font-bold text-white">Project Selection & Contextual Setup Explanations</h3>
+              </div>
+              <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+                Allows students to upload their assigned project title, lab syllabus problem statement, or physical setup photographs. The multimodal AI pipeline parses the experimental setup, identifies physical hardware, and delivers comprehensive, contextual explanations of the project's real-world working principles.
+              </p>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i> Setup Photo Inspector
+                  </div>
+                  <p class="text-xs text-slate-400">Uses computer vision to detect breadboard IC placements, sensor orientations, probe points, and identifies misconfigurations before power is applied.</p>
+                </div>
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Contextual Brief Generator
+                  </div>
+                  <p class="text-xs text-slate-400">Synthesizes university curriculum requirements into clear aims, theoretical foundations, expected waveforms, and environmental constraints.</p>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Input: Project Title / Apparatus Photo</span>
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Output: Annotated Setup Diagram & Conceptual Brief</span>
+                <span class="bg-emerald-950/60 text-emerald-300 px-2.5 py-1 rounded-md border border-emerald-800/50">Benefit: Eliminates Blind Setup Guesswork</span>
+              </div>
+            </div>
+
+            <!-- Quick visual badge -->
+            <div class="lg:w-80 p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-center">
+              <div class="text-xs font-mono text-slate-400 mb-2 flex items-center justify-between">
+                <span>Setup CV Status</span>
+                <span class="text-emerald-400 font-bold">VERIFIED</span>
+              </div>
+              <div class="h-28 rounded-lg bg-slate-950 border border-slate-800 flex flex-col items-center justify-center p-3 text-center">
+                <i data-lucide="camera" class="w-8 h-8 text-emerald-400/80 mb-2"></i>
+                <span class="text-xs text-slate-300 font-mono">Ultrasonic_Radar_v2.png</span>
+                <span class="text-[10px] text-slate-500">Detected: Arduino Uno, HC-SR04, Servo SG90</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 2: Components -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border-l-4 border-teal-500">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-teal-500/20 text-teal-400 border border-teal-500/30">MODULE 02</span>
+                <h3 class="text-2xl font-bold text-white">Components Intelligence & Dynamic BOM Retrieval</h3>
+              </div>
+              <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+                Automatically extracts complete Bills of Materials (BOM), provides pin-for-pin pinouts, operating thresholds (voltage, current, thermal), and teaches students the exact purpose and safe usage of each active/passive component.
+              </p>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-teal-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="cpu" class="w-3.5 h-3.5"></i> Interactive Pinout Diagrams
+                  </div>
+                  <p class="text-xs text-slate-400">High-resolution pin maps highlighting VCC, GND, PWM, analog inputs, and communication buses (I2C, SPI, UART) to avoid reverse biasing.</p>
+                </div>
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-teal-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="shuffle" class="w-3.5 h-3.5"></i> Substitution & Alternatives Matrix
+                  </div>
+                  <p class="text-xs text-slate-400">Suggests bench-safe equivalents when a specific transistor, op-amp, or microcontroller is missing from the university store (e.g., 2N2222 vs BC547).</p>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Input: Component Names or Auto-Extracted BOM</span>
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Output: Pinouts, Safe Voltages & Working Mechanics</span>
+                <span class="bg-teal-950/60 text-teal-300 px-2.5 py-1 rounded-md border border-teal-800/50">Benefit: Prevents Burned Components</span>
+              </div>
+            </div>
+
+            <!-- Quick visual badge -->
+            <div class="lg:w-80 p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-center">
+              <div class="text-xs font-mono text-slate-400 mb-2 flex items-center justify-between">
+                <span>Active Component Info</span>
+                <span class="text-teal-400 font-bold">HC-SR04</span>
+              </div>
+              <div class="space-y-1.5 text-xs font-mono text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-800">
+                <div class="flex justify-between"><span>VCC:</span><span class="text-emerald-400">5V DC (±0.5V)</span></div>
+                <div class="flex justify-between"><span>Trig:</span><span class="text-sky-400">10µs TTL Pulse</span></div>
+                <div class="flex justify-between"><span>Echo:</span><span class="text-amber-400">Proportional Width</span></div>
+                <div class="flex justify-between"><span>Safe Max:</span><span class="text-rose-400">15mA Current</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 3: Process -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border-l-4 border-sky-500">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-sky-500/20 text-sky-400 border border-sky-500/30">MODULE 03</span>
+                <h3 class="text-2xl font-bold text-white">Process: Step-by-Step Instructions & Safety Protocol</h3>
+              </div>
+              <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+                Transforms dry laboratory manual manuals into an interactive, step-by-step digital procedure. Features strict validation hurdles, power-up pre-flight checklists, and instrument calibration guides to ensure safe, reproducible execution.
+              </p>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-sky-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Interactive Checkpoint Gates
+                  </div>
+                  <p class="text-xs text-slate-400">Requires explicit verification of grounding, probe attenuation (1X vs 10X), and polarity before proceeding to energize circuits.</p>
+                </div>
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-sky-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="activity" class="w-3.5 h-3.5"></i> Calibration & Bench Rules
+                  </div>
+                  <p class="text-xs text-slate-400">Guides students through zero-error zeroing of multimeters, balancing Wheatstone bridges, and setting oscilloscope trigger levels.</p>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Input: Experiment Spec / Lab Manual</span>
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Output: Interactive Phased Steps & Checkpoint Audits</span>
+                <span class="bg-sky-950/60 text-sky-300 px-2.5 py-1 rounded-md border border-sky-800/50">Benefit: Eliminates Procedural Errors</span>
+              </div>
+            </div>
+
+            <!-- Quick visual badge -->
+            <div class="lg:w-80 p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-center">
+              <div class="text-xs font-mono text-slate-400 mb-2 flex items-center justify-between">
+                <span>Phase Progress</span>
+                <span class="text-sky-400 font-bold">Step 3 of 5</span>
+              </div>
+              <div class="space-y-2 text-xs bg-slate-950 p-3 rounded-lg border border-slate-800">
+                <div class="flex items-center gap-2 text-emerald-400"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 1. Breadboard Power Rails</div>
+                <div class="flex items-center gap-2 text-emerald-400"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> 2. Pull-up Resistor Wiring</div>
+                <div class="flex items-center gap-2 text-amber-400"><i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i> 3. DSO Probe Grounding</div>
+                <div class="flex items-center gap-2 text-slate-500"><i data-lucide="circle" class="w-3.5 h-3.5"></i> 4. Power Supply Current Limit</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 4: Mistake Journal -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border-l-4 border-amber-500">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-amber-500/20 text-amber-400 border border-amber-500/30">MODULE 04</span>
+                <h3 class="text-2xl font-bold text-white">Mistake Journal: Failure Logging & Root-Cause Resolutions</h3>
+              </div>
+              <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+                A dedicated experiential laboratory logbook. When something goes wrong—overheated chips, non-oscillating clocks, incorrect sensor data, or noise spikes—students record the symptoms. The system diagnoses the electrical/physical root cause and prescribes validated fixes.
+              </p>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-amber-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="bug" class="w-3.5 h-3.5"></i> Symptom-to-Cause Forensics
+                  </div>
+                  <p class="text-xs text-slate-400">Classifies issues into Categories: Hardware shorts, floating inputs, baud rate mismatch, cold solder joints, or wrong op-amp gain feedback.</p>
+                </div>
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-amber-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Actionable Corrective Blueprint
+                  </div>
+                  <p class="text-xs text-slate-400">Provides immediate step-by-step resolution steps and flags whether component integrity was compromised.</p>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Input: Error Symptom / Measurement Anomaly</span>
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Output: Root Cause Explanation & Resolution Protocol</span>
+                <span class="bg-amber-950/60 text-amber-300 px-2.5 py-1 rounded-md border border-amber-800/50">Benefit: Turns Failures into Deep Learning</span>
+              </div>
+            </div>
+
+            <!-- Quick visual badge -->
+            <div class="lg:w-80 p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-center">
+              <div class="text-xs font-mono text-slate-400 mb-2 flex items-center justify-between">
+                <span>Recent Mistake Entry</span>
+                <span class="text-amber-400 font-bold">SOLVED</span>
+              </div>
+              <div class="text-xs bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                <div class="text-rose-400 font-mono flex items-center gap-1.5">
+                  <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Symptom: LCD Display Garbage Characters
+                </div>
+                <p class="text-[11px] text-slate-400">Root Cause: I2C address conflict & missing 4.7kΩ pull-up resistors on SDA/SCL lines.</p>
+                <div class="text-[11px] text-emerald-400 font-medium">Resolution: Added pull-up resistors to 5V rail; scanner found 0x27.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 5: After Lab -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border-l-4 border-indigo-500">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">MODULE 05</span>
+                <h3 class="text-2xl font-bold text-white">After Lab: Observations, Calculations & Graph Plotting</h3>
+              </div>
+              <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+                Structured digital record sheet for organizing empirical readings, automatically applying mathematical reduction formulas, plotting scientific curves, and calculating percentage deviations between theoretical values and practical observations.
+              </p>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-indigo-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5"></i> Automated Error Calculation
+                  </div>
+                  <p class="text-xs text-slate-400">Evaluates theoretical formulas vs experimental values: computes % error, standard deviation, and identifies potential systematic vs random errors.</p>
+                </div>
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-indigo-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="line-chart" class="w-3.5 h-3.5"></i> Scientific Curve Generation
+                  </div>
+                  <p class="text-xs text-slate-400">Generates instant V-I curves, frequency response Bode plots, or hysteresis loops with slope calculation and linear regression.</p>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Input: Raw Data Points (Voltages, Currents, Timers)</span>
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Output: Formatted Observation Tables & Plotted Curves</span>
+                <span class="bg-indigo-950/60 text-indigo-300 px-2.5 py-1 rounded-md border border-indigo-800/50">Benefit: Zero Manual Calculation Blunders</span>
+              </div>
+            </div>
+
+            <!-- Quick visual badge -->
+            <div class="lg:w-80 p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-center">
+              <div class="text-xs font-mono text-slate-400 mb-2 flex items-center justify-between">
+                <span>Calculations Summary</span>
+                <span class="text-indigo-400 font-bold">Ohm's Law / Diode</span>
+              </div>
+              <div class="text-xs bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1.5 font-mono">
+                <div class="flex justify-between text-slate-300"><span>Theoretical Vth:</span><span>0.700 V</span></div>
+                <div class="flex justify-between text-slate-300"><span>Observed Vth:</span><span>0.684 V</span></div>
+                <div class="flex justify-between text-emerald-400 font-bold"><span>Deviation / Error:</span><span>2.28%</span></div>
+                <div class="text-[10px] text-slate-500 pt-1 border-t border-slate-800">Within acceptable 5% lab tolerance</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 6: Viva Predictor -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border-l-4 border-purple-500">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-purple-500/20 text-purple-400 border border-purple-500/30">MODULE 06</span>
+                <h3 class="text-2xl font-bold text-white">Viva Predictor: Experiment & Mistake-Driven Oral Exam Questions</h3>
+              </div>
+              <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+                Generates high-probability oral defense (viva voce) questions synthesized not only from the experimental theory, but critically tailored to the student's own logged mistakes. Prepares students for examiners who probe where the student struggled during the practical.
+              </p>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-purple-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Examiner Trap Anticipator
+                  </div>
+                  <p class="text-xs text-slate-400">Analyzes student's Mistake Journal (e.g. inverted diode, baud mismatch) and generates the exact questions an external examiner asks when looking at that anomaly.</p>
+                </div>
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-purple-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i> Multi-Tier Difficulty
+                  </div>
+                  <p class="text-xs text-slate-400">Spans Level 1 (Direct Definitions), Level 2 (Practical Troubleshooting & Waveform interpretation), to Level 3 (Industry Scalability & Derivations).</p>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Input: Experiment Title + Mistake Journal Entries</span>
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Output: Predicted Viva Questions with Model Answers & Rationale</span>
+                <span class="bg-purple-950/60 text-purple-300 px-2.5 py-1 rounded-md border border-purple-800/50">Benefit: 100% Viva Voce Confidence</span>
+              </div>
+            </div>
+
+            <!-- Quick visual badge -->
+            <div class="lg:w-80 p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-center">
+              <div class="text-xs font-mono text-slate-400 mb-2 flex items-center justify-between">
+                <span>Predicted Question #1</span>
+                <span class="text-purple-400 font-bold">HIGH PROBABILITY</span>
+              </div>
+              <div class="text-xs bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                <p class="text-slate-200 font-medium italic">"Why did your output waveform clip when input exceeded 2.5V pk-pk?"</p>
+                <div class="text-[10px] text-purple-300 bg-purple-900/30 p-2 rounded border border-purple-800/40">
+                  Targeting student's logged mistake #2 (Op-Amp saturation rail limit).
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Module 7: Personal Progress -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border-l-4 border-rose-500">
+          <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+            <div class="flex-1">
+              <div class="flex items-center gap-3">
+                <span class="px-2.5 py-1 rounded-md text-xs font-mono font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30">MODULE 07</span>
+                <h3 class="text-2xl font-bold text-white">Personal Progress: Longitudinal Knowledge Gap Identification</h3>
+              </div>
+              <p class="mt-3 text-slate-300 text-sm leading-relaxed">
+                Aggregates performance, recurring mistake patterns, and conceptual struggles across multiple weeks and distinct laboratory courses. It diagnoses fundamental knowledge gaps (e.g., repeated impedance mismatches, ground loop negligence, or thermal drift oversights) and recommends targeted remediation.
+              </p>
+
+              <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-rose-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> Cross-Experiment Analytics
+                  </div>
+                  <p class="text-xs text-slate-400">Tracks student competency across Electronics, Digital Logic, Microcontrollers, and Thermodynamics to reveal underlying foundational gaps.</p>
+                </div>
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                  <div class="text-xs font-semibold text-rose-400 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="target" class="w-3.5 h-3.5"></i> Prescriptive Micro-Lessons
+                  </div>
+                  <p class="text-xs text-slate-400">Delivers short, 3-minute conceptual refreshers specifically tailored to the mathematical or procedural gaps identified.</p>
+                </div>
+              </div>
+
+              <div class="mt-4 flex flex-wrap gap-2 text-[11px] font-mono text-slate-400">
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Input: History of Experiments, Logs & Calculations</span>
+                <span class="bg-slate-800 px-2.5 py-1 rounded-md border border-slate-700">Output: Competency Radar, Gap Alerts & Remedial Paths</span>
+                <span class="bg-rose-950/60 text-rose-300 px-2.5 py-1 rounded-md border border-rose-800/50">Benefit: Continuous Academic Mastery</span>
+              </div>
+            </div>
+
+            <!-- Quick visual badge -->
+            <div class="lg:w-80 p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-center">
+              <div class="text-xs font-mono text-slate-400 mb-2 flex items-center justify-between">
+                <span>Knowledge Gap Alert</span>
+                <span class="text-rose-400 font-bold">RECURRING</span>
+              </div>
+              <div class="text-xs bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1.5">
+                <div class="text-rose-400 font-semibold flex items-center gap-1.5">
+                  <i data-lucide="alert-octagon" class="w-3.5 h-3.5"></i> Common Grounding Omission
+                </div>
+                <p class="text-[11px] text-slate-400">Repeated across Lab 2 (Arduino), Lab 4 (Motor Driver), and Lab 5 (Sensor Interface).</p>
+                <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mt-1">
+                  <div class="bg-rose-500 h-full w-3/4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Interactive Suite (Live Demos for All 7 Modules) -->
+  <section id="interactive-suite" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-semibold mb-4">
+        <i data-lucide="terminal" class="w-3.5 h-3.5"></i> LIVE WORKBENCH DEMO
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Experience The 7 Modules in Action</h2>
+      <p class="mt-3 text-slate-400 text-sm">
+        Click through each module tab below to test the simulated workflows, interactive calculations, failure forensics, and viva voce generator.
+      </p>
+    </div>
+
+    <!-- Interactive Tabs Navigation -->
+    <div class="flex flex-wrap items-center justify-center gap-2 p-1.5 bg-slate-900/90 rounded-2xl border border-slate-800 max-w-5xl mx-auto mb-8">
+      <button onclick="switchTab('tab-selection')" id="btn-tab-selection" class="module-tab-btn active px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition bg-emerald-600 text-white shadow">
+        <i data-lucide="upload" class="w-3.5 h-3.5"></i> 1. Selection
+      </button>
+      <button onclick="switchTab('tab-components')" id="btn-tab-components" class="module-tab-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <i data-lucide="cpu" class="w-3.5 h-3.5"></i> 2. Components
+      </button>
+      <button onclick="switchTab('tab-process')" id="btn-tab-process" class="module-tab-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> 3. Process
+      </button>
+      <button onclick="switchTab('tab-mistake')" id="btn-tab-mistake" class="module-tab-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <i data-lucide="book-x" class="w-3.5 h-3.5"></i> 4. Mistake Journal
+      </button>
+      <button onclick="switchTab('tab-afterlab')" id="btn-tab-afterlab" class="module-tab-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i> 5. After Lab
+      </button>
+      <button onclick="switchTab('tab-viva')" id="btn-tab-viva" class="module-tab-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <i data-lucide="brain-circuit" class="w-3.5 h-3.5"></i> 6. Viva Predictor
+      </button>
+      <button onclick="switchTab('tab-progress')" id="btn-tab-progress" class="module-tab-btn px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> 7. Personal Progress
+      </button>
+    </div>
+
+    <!-- Tab Container Panels -->
+    <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl relative min-h-[460px]">
+
+      <!-- TAB 1: PROJECT SELECTION -->
+      <div id="tab-selection" class="tab-content block">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="upload-cloud" class="w-5 h-5 text-emerald-400"></i> Module 1: Project Selection & Setup Explanations
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Upload your experiment topic or hardware photo to trigger real-time AI contextual setup breakdown.</p>
+          </div>
+          <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">CV Analysis Ready</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Project / Experiment Title</label>
+              <div class="flex gap-2">
+                <input id="proj-title-input" type="text" value="IoT Weather Station with ESP32 & DHT22 Sensor" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+                <button onclick="simulateProjectAnalyze()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold whitespace-nowrap transition">
+                  Analyze
+                </button>
+              </div>
+            </div>
+
+            <!-- Drag & Drop Zone Simulation -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-1.5">Physical Setup Photo</label>
+              <div onclick="simulatePhotoDrop()" class="border-2 border-dashed border-slate-700 hover:border-emerald-500/80 bg-slate-900/60 rounded-2xl p-6 text-center cursor-pointer transition">
+                <i data-lucide="image" class="w-8 h-8 text-emerald-400 mx-auto mb-2"></i>
+                <div class="text-xs font-medium text-slate-200">Click to load sample lab workbench photo</div>
+                <div class="text-[11px] text-slate-400 mt-1">Simulates AI CV object detection & pin verification</div>
+              </div>
+            </div>
+
+            <!-- Quick Presets -->
+            <div>
+              <span class="text-[11px] text-slate-400 block mb-1.5">Load Syllabus Experiment Presets:</span>
+              <div class="flex flex-wrap gap-2">
+                <button onclick="setProjectPreset('Half Wave Rectifier with Capacitor Filter', 'ECE-201')" class="text-[11px] px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">ECE: Half Wave Rectifier</button>
+                <button onclick="setProjectPreset('Ultrasonic Obstacle Avoiding Robot with L298N', 'ROB-102')" class="text-[11px] px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Robotics: Obstacle Avoider</button>
+                <button onclick="setProjectPreset('Thermal Conductivity of Metal Rod (Fourier Law)', 'ME-304')" class="text-[11px] px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">Mech: Fourier Conduction</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analysis Output Panel -->
+          <div id="selection-output" class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+                <span class="text-xs font-mono font-semibold text-emerald-400 flex items-center gap-1.5">
+                  <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> AI Contextual Explanation Engine
+                </span>
+                <span class="text-[10px] font-mono text-slate-400" id="selection-course-tag">Course: IoT-101</span>
+              </div>
+              <h4 id="selection-result-title" class="text-sm font-bold text-white mb-2">IoT Weather Station with ESP32 & DHT22</h4>
+              <p id="selection-result-desc" class="text-xs text-slate-300 leading-relaxed">
+                This experiment demonstrates real-time environmental telemetry. The ESP32 acquires relative humidity (0–100%) and ambient temperature (-40°C to 80°C) over a single-bus digital protocol, packages the data into JSON, and transmits via Wi-Fi/MQTT.
+              </p>
+              
+              <div class="mt-4 space-y-2">
+                <div class="text-[11px] font-semibold text-slate-300">Detected Hardware in Setup Photo:</div>
+                <div id="selection-detected-tags" class="flex flex-wrap gap-1.5">
+                  <span class="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 text-[10px] font-mono">ESP32 DevKit V1 (30-pin)</span>
+                  <span class="px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300 text-[10px] font-mono">DHT22 (AM2302)</span>
+                  <span class="px-2 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300 text-[10px] font-mono">10kΩ Pull-up Resistor</span>
+                  <span class="px-2 py-0.5 rounded bg-purple-950 border border-purple-800 text-purple-300 text-[10px] font-mono">MB102 Breadboard</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+              <span>Safety Check: <strong class="text-emerald-400">PASSED</strong></span>
+              <span>Context Clarity: <strong class="text-cyan-400">98%</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: COMPONENTS -->
+      <div id="tab-components" class="tab-content hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="cpu" class="w-5 h-5 text-teal-400"></i> Module 2: Components List & Deep Usages
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Explore required BOM, internal architectures, pin configurations, and operational limits.</p>
+          </div>
+          <span class="text-xs font-mono text-teal-400 bg-teal-500/10 px-3 py-1 rounded-full border border-teal-500/20">BOM Catalog: 4 Items</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Component Selector List -->
+          <div class="space-y-2">
+            <div onclick="selectComponent('esp32')" id="comp-item-esp32" class="p-3 rounded-xl bg-slate-900 border border-teal-500/50 cursor-pointer transition hover:bg-slate-800/80">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-white">ESP32 DevKit V1</span>
+                <span class="text-[10px] font-mono bg-teal-500/20 text-teal-300 px-2 py-0.5 rounded">Microcontroller</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Dual-core Xtensa 32-bit LX6 with Wi-Fi & BLE.</p>
+            </div>
+
+            <div onclick="selectComponent('dht22')" id="comp-item-dht22" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition hover:bg-slate-800/80">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-white">DHT22 / AM2302</span>
+                <span class="text-[10px] font-mono bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded">Digital Sensor</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Capacitive humidity sensor & thermistor with single-wire bus.</p>
+            </div>
+
+            <div onclick="selectComponent('resistor')" id="comp-item-resistor" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition hover:bg-slate-800/80">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-white">10kΩ Pull-Up Resistor</span>
+                <span class="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded">Passive Element</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Prevents indeterminate floating state on open-drain data pin.</p>
+            </div>
+
+            <div onclick="selectComponent('l298n')" id="comp-item-l298n" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition hover:bg-slate-800/80">
+              <div class="flex justify-between items-center">
+                <span class="font-bold text-xs text-white">L298N Dual H-Bridge</span>
+                <span class="text-[10px] font-mono bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">Motor Driver</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">High-voltage, high-current dual full-bridge driver.</p>
+            </div>
+          </div>
+
+          <!-- Component Details Explorer -->
+          <div id="component-detail-card" class="lg:col-span-2 bg-slate-950 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                <div>
+                  <h4 id="comp-detail-name" class="text-base font-bold text-white">ESP32 DevKit V1 (30-Pin NodeMCU)</h4>
+                  <span id="comp-detail-category" class="text-xs text-teal-400 font-mono">Category: SoC System-on-Chip</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] text-slate-400 block">Operating Voltage</span>
+                  <span id="comp-detail-volt" class="text-xs font-mono font-bold text-emerald-400">3.3V Logic (5V Vin via LDO)</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs mb-4">
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                  <div class="font-semibold text-slate-200 mb-1">Laboratory Role & Usage:</div>
+                  <p id="comp-detail-role" class="text-slate-400 leading-relaxed">Acts as the central processing unit and edge node. It reads raw digital signals from sensors, applies calibration algorithms, and provides serial debug feedback to the computer terminal.</p>
+                </div>
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                  <div class="font-semibold text-rose-400 mb-1">Critical Caution / Thresholds:</div>
+                  <p id="comp-detail-caution" class="text-slate-400 leading-relaxed">GPIO pins are NOT 5V tolerant! Applying 5V directly to GPIO4, GPIO21, etc., will permanently damage the silicon gate oxide layer.</p>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs font-semibold text-slate-200 mb-2">Pin Function Mapping:</div>
+                <div id="comp-detail-pins" class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px]">
+                  <div class="p-2 rounded bg-slate-900 border border-slate-800 text-center"><span class="text-slate-500 block text-[9px]">PIN 1</span><strong class="text-emerald-400">3V3</strong> (Power Out)</div>
+                  <div class="p-2 rounded bg-slate-900 border border-slate-800 text-center"><span class="text-slate-500 block text-[9px]">PIN 2</span><strong class="text-slate-400">GND</strong> (Ground)</div>
+                  <div class="p-2 rounded bg-slate-900 border border-slate-800 text-center"><span class="text-slate-500 block text-[9px]">PIN 4</span><strong class="text-teal-400">GPIO 4</strong> (Data In)</div>
+                  <div class="p-2 rounded bg-slate-900 border border-slate-800 text-center"><span class="text-slate-500 block text-[9px]">PIN 15</span><strong class="text-sky-400">VIN</strong> (5V Input)</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+              <span>Datasheet Spec: <span class="text-teal-400 font-mono">Espressif Systems ESP32-WROOM-32D</span></span>
+              <button class="text-emerald-400 hover:underline flex items-center gap-1"><i data-lucide="external-link" class="w-3.5 h-3.5"></i> Pinout Schematic</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: PROCESS -->
+      <div id="tab-process" class="tab-content hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="list-checks" class="w-5 h-5 text-sky-400"></i> Module 3: Step-by-Step Instructions & Process Gates
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Interactive sequential guidance with hardware safety checkpoints and verification audits.</p>
+          </div>
+          <span class="text-xs font-mono text-sky-400 bg-sky-500/10 px-3 py-1 rounded-full border border-sky-500/20">Protocol: 5 Stages</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Step Checklist -->
+          <div class="space-y-3">
+            <div onclick="selectStep(1)" id="step-nav-1" class="p-3 rounded-xl bg-slate-900 border border-sky-500 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-white">Step 1: Power Rail Initialization</span>
+                <span class="text-emerald-400"><i data-lucide="check" class="w-3.5 h-3.5"></i></span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Distribute regulated 3.3V and Common GND across breadboard rails.</p>
+            </div>
+
+            <div onclick="selectStep(2)" id="step-nav-2" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-white">Step 2: Sensor Wire Harness</span>
+                <span class="text-sky-400 font-mono text-[10px]">CURRENT</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Connect DHT22 Pin 1 to 3.3V, Pin 4 to GND, Pin 2 to GPIO 4.</p>
+            </div>
+
+            <div onclick="selectStep(3)" id="step-nav-3" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-400">Step 3: Pull-up Resistor Insertion</span>
+                <span class="text-slate-600"><i data-lucide="lock" class="w-3.5 h-3.5"></i></span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Bridge 10kΩ between Data (GPIO 4) and 3.3V VCC.</p>
+            </div>
+
+            <div onclick="selectStep(4)" id="step-nav-4" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-400">Step 4: Firmware Flash & Baud Config</span>
+                <span class="text-slate-600"><i data-lucide="lock" class="w-3.5 h-3.5"></i></span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1">Set Serial Monitor to 115200 baud; verify sampling pulse.</p>
+            </div>
+          </div>
+
+          <!-- Active Step Instruction Card -->
+          <div class="lg:col-span-2 bg-slate-950 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                <div>
+                  <span id="step-active-num" class="text-xs font-mono text-sky-400 font-semibold">STAGE 2 OF 5</span>
+                  <h4 id="step-active-title" class="text-base font-bold text-white">Sensor Wire Harness Assembly</h4>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-mono">Hurdle Checkpoint</span>
+              </div>
+
+              <div class="space-y-4 text-xs">
+                <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
+                  <h5 class="font-semibold text-slate-200 mb-2 flex items-center gap-1.5">
+                    <i data-lucide="info" class="w-4 h-4 text-sky-400"></i> Detailed Action Instructions:
+                  </h5>
+                  <p id="step-active-desc" class="text-slate-300 leading-relaxed">
+                    1. Seat the DHT22 module firmly across rows 10–14 of the breadboard.<br>
+                    2. Run a Red jumper from DHT22 Pin 1 to the Red 3.3V breadboard rail.<br>
+                    3. Run a Black jumper from DHT22 Pin 4 to the Blue GND breadboard rail.<br>
+                    4. Run a Yellow jumper from DHT22 Pin 2 (Data) to ESP32 Pin GPIO 4 (Row 22).
+                  </p>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-sky-950/40 border border-sky-800/40">
+                  <div class="text-sky-300 font-semibold mb-1 flex items-center gap-1.5">
+                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-sky-400"></i> Verification Checkpoint:
+                  </div>
+                  <p class="text-slate-300 text-[11px]">Before proceeding, test continuity with your digital multimeter between DHT22 Pin 4 and ESP32 GND pin to ensure reference parity.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between">
+              <span class="text-xs text-slate-400">Status: <strong class="text-amber-400 font-mono">Verification Pending</strong></span>
+              <button onclick="advanceStep()" class="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold flex items-center gap-1.5 transition">
+                <span>Confirm Checkpoint & Advance</span> <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 4: MISTAKE JOURNAL -->
+      <div id="tab-mistake" class="tab-content hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="book-x" class="w-5 h-5 text-amber-400"></i> Module 4: Mistake Journal & Failure Forensics
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Log experimental mistakes, isolate root causes, and learn permanent prevention resolutions.</p>
+          </div>
+          <span class="text-xs font-mono text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">3 Resolved Incidents</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Log List -->
+          <div class="space-y-3">
+            <div onclick="selectMistake(1)" id="mistake-item-1" class="p-3 rounded-xl bg-slate-900 border border-amber-500/60 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-white">Nan / Sensor Read Timeout</span>
+                <span class="text-[10px] font-mono text-rose-400 bg-rose-500/10 px-1.5 py-0.5 rounded">Wiring</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Serial monitor printing "Failed to read from DHT sensor!".</p>
+            </div>
+
+            <div onclick="selectMistake(2)" id="mistake-item-2" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-white">ESP32 Overheating / Brownout</span>
+                <span class="text-[10px] font-mono text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">Power</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Controller resets constantly upon Wi-Fi radio activation.</p>
+            </div>
+
+            <div onclick="selectMistake(3)" id="mistake-item-3" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-white">Garbled Serial Baud Output</span>
+                <span class="text-[10px] font-mono text-cyan-400 bg-cyan-500/10 px-1.5 py-0.5 rounded">Timing</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Terminal displaying strange symbols and inverted question marks.</p>
+            </div>
+
+            <button onclick="addNewMistakePrompt()" class="w-full py-2.5 rounded-xl border border-dashed border-slate-700 hover:border-amber-400 text-xs text-slate-400 hover:text-amber-400 flex items-center justify-center gap-1.5 transition">
+              <i data-lucide="plus" class="w-3.5 h-3.5"></i> Log New Lab Mistake
+            </button>
+          </div>
+
+          <!-- Forensics Card -->
+          <div class="lg:col-span-2 bg-slate-950 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                <div>
+                  <span class="text-xs font-mono text-amber-400 font-semibold" id="mistake-detail-id">INCIDENT FORENSICS #MJ-084</span>
+                  <h4 class="text-base font-bold text-white" id="mistake-detail-title">Sensor Read Timeout (NaN Readings)</h4>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-mono">Resolution Verified</span>
+              </div>
+
+              <div class="space-y-3 text-xs">
+                <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                  <div class="font-semibold text-rose-400 mb-1 flex items-center gap-1.5">
+                    <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Recorded Symptom:
+                  </div>
+                  <p id="mistake-detail-symptom" class="text-slate-300">ESP32 boots normally, but Serial Monitor displays continuous "Failed to read from DHT sensor! Returning NaN".</p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+                  <div class="font-semibold text-amber-400 mb-1 flex items-center gap-1.5">
+                    <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Physical / Electrical Root Cause:
+                  </div>
+                  <p id="mistake-detail-cause" class="text-slate-300 leading-relaxed">
+                    The DHT22 data line requires an open-drain pull-up. The student omitted the 10kΩ resistor, causing the data pin to float. Consequently, the start transmission pulse sent by the ESP32 was never acknowledged by the sensor.
+                  </p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800/40">
+                  <div class="font-semibold text-emerald-400 mb-1 flex items-center gap-1.5">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Prescribed Resolution & Fix:
+                  </div>
+                  <p id="mistake-detail-resolution" class="text-slate-300 leading-relaxed">
+                    1. Insert a 10kΩ resistor across DHT22 Pin 1 (3.3V) and Pin 2 (Data).<br>
+                    2. Add a 2-second initial warm-up delay in setup() before calling dht.readTemperature().
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+              <span>Examiner Relevance: <strong class="text-purple-400 font-mono">Will be sent to Viva Predictor</strong></span>
+              <span class="text-emerald-400 font-mono font-medium">Logged in Personal Progress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 5: AFTER LAB -->
+      <div id="tab-afterlab" class="tab-content hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-400"></i> Module 5: After Lab Observations, Calculations & Graph Plotter
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Enter empirical readings, calculate percentage deviations automatically, and render publication-grade plots.</p>
+          </div>
+          <button onclick="calculateLabData()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 transition">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Recompute Formulas
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Data Table Input -->
+          <div>
+            <div class="text-xs font-semibold text-slate-200 mb-2 flex items-center justify-between">
+              <span>Empirical Observation Grid (Ohm's Law / Diode Forward Bias)</span>
+              <span class="text-slate-400 font-mono text-[11px]">4 Data Points</span>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950">
+              <table class="w-full text-xs text-left">
+                <thead class="bg-slate-900 text-slate-300 font-mono text-[11px] border-b border-slate-800">
+                  <tr>
+                    <th class="p-2.5">Trial</th>
+                    <th class="p-2.5">Input Voltage (V)</th>
+                    <th class="p-2.5">Observed Current (mA)</th>
+                    <th class="p-2.5">Theoretical (mA)</th>
+                    <th class="p-2.5">Error %</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/80 font-mono text-slate-300" id="obs-table-body">
+                  <tr>
+                    <td class="p-2.5 text-slate-400">#1</td>
+                    <td class="p-2.5">1.0 V</td>
+                    <td class="p-2.5 text-white">4.8 mA</td>
+                    <td class="p-2.5 text-slate-400">5.0 mA</td>
+                    <td class="p-2.5 text-emerald-400">4.0%</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 text-slate-400">#2</td>
+                    <td class="p-2.5">2.0 V</td>
+                    <td class="p-2.5 text-white">9.7 mA</td>
+                    <td class="p-2.5 text-slate-400">10.0 mA</td>
+                    <td class="p-2.5 text-emerald-400">3.0%</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 text-slate-400">#3</td>
+                    <td class="p-2.5">3.0 V</td>
+                    <td class="p-2.5 text-white">14.4 mA</td>
+                    <td class="p-2.5 text-slate-400">15.0 mA</td>
+                    <td class="p-2.5 text-emerald-400">4.0%</td>
+                  </tr>
+                  <tr>
+                    <td class="p-2.5 text-slate-400">#4</td>
+                    <td class="p-2.5">4.0 V</td>
+                    <td class="p-2.5 text-white">19.1 mA</td>
+                    <td class="p-2.5 text-slate-400">20.0 mA</td>
+                    <td class="p-2.5 text-emerald-400">4.5%</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Mathematical Formula Box -->
+            <div class="mt-4 p-4 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-[11px] font-mono text-indigo-400 font-semibold mb-1">MATHEMATICAL REDUCTION FORMULA</div>
+              <div class="text-xs text-slate-300 font-mono bg-slate-950 p-2.5 rounded-lg border border-slate-800 mb-2">
+                Resistance R = &Delta;V / &Delta;I = (4.0 - 1.0) / (0.0191 - 0.0048) = 209.79 &Omega;
+              </div>
+              <div class="flex items-center justify-between text-xs text-slate-400">
+                <span>Theoretical Resistance: <strong class="text-white">200 &Omega;</strong></span>
+                <span>Calculated Error: <strong class="text-emerald-400 font-mono">4.89% (Valid)</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Chart Canvas -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-slate-200">Interactive V-I Curve Plot</span>
+              <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded">R² = 0.998</span>
+            </div>
+            <div class="h-64 relative">
+              <canvas id="afterLabChart"></canvas>
+            </div>
+            <div class="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+              <span class="text-slate-400">Report Ready: <strong class="text-indigo-400">Yes (IEEE Format)</strong></span>
+              <button onclick="exportLabReport()" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i> Export PDF Report
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 6: VIVA PREDICTOR -->
+      <div id="tab-viva" class="tab-content hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="brain-circuit" class="w-5 h-5 text-purple-400"></i> Module 6: Viva Voce Defense Predictor
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Generates customized oral questions synthesized from experimental theory AND your logged laboratory mistakes.</p>
+          </div>
+          <button onclick="generateNextVivaQuestion()" class="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold flex items-center gap-1.5 transition">
+            <i data-lucide="shuffle" class="w-3.5 h-3.5"></i> Next Predicted Question
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Question Feed -->
+          <div class="space-y-3">
+            <div onclick="selectVivaCard(1)" id="viva-item-1" class="p-3 rounded-xl bg-slate-900 border border-purple-500/60 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="text-[10px] font-mono text-purple-400 font-semibold">QUESTION 1 (TRAP)</span>
+                <span class="text-[10px] text-rose-400 font-mono">From Mistake Log</span>
+              </div>
+              <p class="text-xs font-bold text-white">"Why did your sensor return NaN without a pull-up resistor?"</p>
+            </div>
+
+            <div onclick="selectVivaCard(2)" id="viva-item-2" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="text-[10px] font-mono text-purple-400 font-semibold">QUESTION 2 (THEORY)</span>
+                <span class="text-[10px] text-cyan-400 font-mono">Conceptual</span>
+              </div>
+              <p class="text-xs font-bold text-white">"What is the difference between capacitive and resistive humidity sensing?"</p>
+            </div>
+
+            <div onclick="selectVivaCard(3)" id="viva-item-3" class="p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer transition">
+              <div class="flex items-center justify-between text-xs mb-1">
+                <span class="text-[10px] font-mono text-purple-400 font-semibold">QUESTION 3 (APPLICATION)</span>
+                <span class="text-[10px] text-amber-400 font-mono">Practical System</span>
+              </div>
+              <p class="text-xs font-bold text-white">"How does 3.3V vs 5V logic level difference affect signal integrity over long wires?"</p>
+            </div>
+          </div>
+
+          <!-- Active Viva Card Explorer -->
+          <div class="lg:col-span-2 bg-slate-950 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+                <div>
+                  <span class="text-xs font-mono text-purple-400 font-semibold" id="viva-card-category">EXAMINER SIMULATION — TARGETING MISTAKE #MJ-084</span>
+                  <h4 class="text-base font-bold text-white mt-1" id="viva-card-question">"Why did your sensor return NaN before adding a pull-up resistor?"</h4>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-purple-500/10 text-purple-300 border border-purple-500/30 text-xs font-mono">Difficulty: 4/5</span>
+              </div>
+
+              <div class="space-y-4 text-xs">
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+                  <div class="text-xs font-semibold text-purple-400 mb-2 flex items-center gap-1.5">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Comprehensive Model Answer:
+                  </div>
+                  <p id="viva-card-answer" class="text-slate-300 leading-relaxed">
+                    "The DHT22 single-wire protocol utilizes an open-drain output transistor. An open-drain pin can actively pull the signal line to GND (Logic LOW), but cannot pull it HIGH on its own. Without an external 10k&Omega; pull-up resistor to the 3.3V rail, the line remains in a floating, high-impedance state. Consequently, the microcontroller cannot detect the 80µs initial LOW and 80µs HIGH handshake response from the sensor, leading to a timeout exception and returning NaN."
+                  </p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-purple-950/40 border border-purple-800/40">
+                  <div class="text-purple-300 font-semibold mb-1 flex items-center gap-1.5">
+                    <i data-lucide="help-circle" class="w-3.5 h-3.5 text-purple-400"></i> Examiner's Likely Follow-Up Trap:
+                  </div>
+                  <p id="viva-card-followup" class="text-slate-300 text-[11px]">"Could you have used the microcontroller's internal pull-up resistor instead of an external one? Why might an internal 50k&Omega; pull-up fail at longer wire lengths?"</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+              <span>Readiness Score: <strong class="text-emerald-400 font-mono">92% Prepared</strong></span>
+              <button onclick="toggleVivaAnswer()" class="text-purple-400 hover:text-purple-300 font-medium">Toggle Hidden Defense Cue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 7: PERSONAL PROGRESS -->
+      <div id="tab-progress" class="tab-content hidden">
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+          <div>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-5 h-5 text-rose-400"></i> Module 7: Personal Progress & Recurring Knowledge Gap Tracker
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Cross-experiment longitudinal diagnostic identifying deep conceptual blindspots across your lab terms.</p>
+          </div>
+          <span class="text-xs font-mono text-rose-400 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">Overall Mastery: 84%</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Competency Radar Chart -->
+          <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-slate-200">Longitudinal Competency Radar</span>
+              <span class="text-[10px] font-mono text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded">6 Domains</span>
+            </div>
+            <div class="h-64 relative">
+              <canvas id="progressRadarChart"></canvas>
+            </div>
+            <div class="text-[11px] text-slate-400 text-center mt-2">
+              Strongest: <strong class="text-emerald-400">Circuit Wiring (92%)</strong> | Weakest: <strong class="text-rose-400">Grounding / Noise (61%)</strong>
+            </div>
+          </div>
+
+          <!-- Recurring Gaps Diagnostics -->
+          <div class="lg:col-span-2 space-y-4">
+            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
+              <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-800">
+                <span class="text-xs font-mono font-semibold text-rose-400 flex items-center gap-1.5">
+                  <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i> Detected Recurring Knowledge Gaps (Across 5 Labs)
+                </span>
+                <span class="text-[10px] text-slate-400 font-mono">Action Required</span>
+              </div>
+
+              <div class="space-y-3">
+                <div class="p-3 rounded-xl bg-slate-900 border border-rose-900/50">
+                  <div class="flex justify-between items-center text-xs mb-1">
+                    <span class="font-bold text-white flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-rose-500"></span> Common Ground Reference Omission
+                    </span>
+                    <span class="text-[10px] font-mono text-rose-400 bg-rose-950 px-2 py-0.5 rounded">Repeated 3x</span>
+                  </div>
+                  <p class="text-[11px] text-slate-300">Encountered in Arduino Lab (Exp 2), Motor Driver H-Bridge (Exp 4), and ESP32 Weather Node (Exp 5). Forgetting to tie external supply ground to MCU ground causes floating voltage references.</p>
+                  <div class="mt-2 text-[10px] text-emerald-400 font-medium">Recommended Remediation: Complete 4-min interactive circuit ground loop module.</div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-900 border border-amber-900/50">
+                  <div class="flex justify-between items-center text-xs mb-1">
+                    <span class="font-bold text-white flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-amber-500"></span> Impedance Loading on Oscilloscope Probes
+                    </span>
+                    <span class="text-[10px] font-mono text-amber-400 bg-amber-950 px-2 py-0.5 rounded">Repeated 2x</span>
+                  </div>
+                  <p class="text-[11px] text-slate-300">Using 1X probe attenuation on high-frequency signals introduces 100pF capacitive loading, rounding square wave edges and distorting rise time measurements.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Readiness Indicator -->
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-emerald-950/40 border border-slate-800 flex items-center justify-between">
+              <div>
+                <span class="text-xs text-slate-400 block">End-of-Semester Lab Exam Readiness</span>
+                <div class="text-lg font-bold text-white flex items-center gap-2 mt-0.5">
+                  <span>88% High Probability of A+ Grade</span>
+                  <span class="text-xs text-emerald-400 font-mono font-normal">(&uarr; 14% improvement)</span>
+                </div>
+              </div>
+              <button class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow transition">
+                Start Remedial Review
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section 4: System Architecture & Data Flow -->
+  <section id="architecture" class="py-20 bg-slate-900/60 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="h-px bg-emerald-500/40 w-12"></div>
+        <span class="text-xs uppercase font-mono tracking-widest text-emerald-400 font-semibold">Technical Architecture</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">System Workflow & Inter-Module Feedback</h2>
+      <p class="mt-3 text-slate-400 max-w-3xl text-base">
+        How the 7 modules seamlessly communicate with each other to turn raw student lab struggles into comprehensive mastery.
+      </p>
+
+      <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-6 rounded-2xl border-t-2 border-emerald-400">
+          <div class="text-xs font-mono text-emerald-400 font-bold mb-2">STAGE 1: INGESTION & SETUP</div>
+          <h4 class="text-base font-bold text-white mb-2">Multimodal Visual Pipeline</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Module 1 parses project titles and checks workbench photos with computer vision. Detected components automatically populate Module 2 (Components Catalog) and generate sequenced instructions in Module 3 (Process).
+          </p>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border-t-2 border-amber-400">
+          <div class="text-xs font-mono text-amber-400 font-bold mb-2">STAGE 2: EXECUTION & FORENSICS</div>
+          <h4 class="text-base font-bold text-white mb-2">In-Lab Safety & Anomaly Engine</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            During execution in Module 3, any unexpected behavior or short circuit is routed directly into Module 4 (Mistake Journal). Root-cause analysis resolves the problem on the fly, preventing blown ICs.
+          </p>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border-t-2 border-purple-400">
+          <div class="text-xs font-mono text-purple-400 font-bold mb-2">STAGE 3: SYNTHESIS & DEFENSE</div>
+          <h4 class="text-base font-bold text-white mb-2">Feedback Loop to Viva & Progress</h4>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Module 5 logs actual observations and error percentages. Module 6 consumes both the experiment context and the specific errors logged in Module 4 to simulate tough viva questions. Module 7 indexes recurring mistakes across terms.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 border-t border-slate-800 bg-[#070a10]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white">
+          <i data-lucide="flask-conical" class="w-4 h-4"></i>
+        </div>
+        <span class="text-sm font-bold text-white">Virtual Lab Partner</span>
+        <span class="text-xs text-slate-500">| Academic Engineering & Laboratory Companion</span>
+      </div>
+      <div class="text-xs text-slate-400 flex items-center gap-4">
+        <span>Hosted locally on <strong class="text-emerald-400 font-mono">http://localhost:8080</strong></span>
+        <span>&bull;</span>
+        <span>Virtual Project Partner Overview</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Embedded Interactive Script -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Tab Navigation Logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('block');
+      });
+      document.querySelectorAll('.module-tab-btn').forEach(btn => {
+        btn.classList.remove('bg-emerald-600', 'text-white', 'shadow');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeTab = document.getElementById(tabId);
+      if (activeTab) {
+        activeTab.classList.remove('hidden');
+        activeTab.classList.add('block');
+      }
+
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-400');
+        activeBtn.classList.add('bg-emerald-600', 'text-white', 'shadow');
+      }
+
+      // Re-trigger chart render if needed
+      if (tabId === 'tab-afterlab') {
+        initAfterLabChart();
+      } else if (tabId === 'tab-progress') {
+        initRadarChart();
+      }
+    }
+
+    // Module 1 Presets
+    const presets = {
+      'Half Wave Rectifier with Capacitor Filter': {
+        course: 'ECE-201 (Analog Electronics)',
+        desc: 'Converts sinusoidal AC input into pulsating DC using a 1N4007 PN junction diode and a shunt electrolytic capacitor (1000µF) to reduce ripple factor below 5%.',
+        tags: ['1N4007 Diode', 'Step-Down Transformer 12-0-12', '1000µF 25V Capacitor', '1kΩ Load Resistor', 'DSO Probe']
+      },
+      'Ultrasonic Obstacle Avoiding Robot with L298N': {
+        course: 'ROB-102 (Robotics & Mechatronics)',
+        desc: 'Autonomous mobile robot that pings distance via HC-SR04 ultrasonic echo time, processes obstacle threshold (<20cm), and modulates dual DC motors via L298N H-Bridge PWM.',
+        tags: ['Arduino Uno R3', 'HC-SR04 Ultrasonic', 'L298N Motor Driver', '2x TT Geared Motors', '7.4V 2S Li-Po']
+      },
+      'Thermal Conductivity of Metal Rod (Fourier Law)': {
+        course: 'ME-304 (Heat & Mass Transfer)',
+        desc: 'Measures one-dimensional steady-state heat conduction along a calibrated copper rod. Thermocouples placed at 50mm intervals record temperature gradient dT/dx.',
+        tags: ['Fourier Heat Conduction Unit', 'K-Type Thermocouples', 'Digital Temperature Indicator', 'Variac Heater Control']
+      }
+    };
+
+    function setProjectPreset(title, course) {
+      document.getElementById('proj-title-input').value = title;
+      simulateProjectAnalyze();
+    }
+
+    function simulateProjectAnalyze() {
+      const title = document.getElementById('proj-title-input').value;
+      const resTitle = document.getElementById('selection-result-title');
+      const resDesc = document.getElementById('selection-result-desc');
+      const resTags = document.getElementById('selection-detected-tags');
+      const resCourse = document.getElementById('selection-course-tag');
+
+      resTitle.innerText = title;
+
+      if (presets[title]) {
+        resDesc.innerText = presets[title].desc;
+        resCourse.innerText = 'Course: ' + presets[title].course;
+        resTags.innerHTML = presets[title].tags.map(t => `<span class="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 text-[10px] font-mono">${t}</span>`).join('');
+      } else {
+        resDesc.innerText = `Custom Project Analysis: Synthesizing real-world operation, hardware safety limits, pin requirements, and syllabus milestones for "${title}".`;
+        resCourse.innerText = 'Course: Custom Engineering Lab';
+        resTags.innerHTML = `
+          <span class="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-300 text-[10px] font-mono">Microcontroller / Core</span>
+          <span class="px-2 py-0.5 rounded bg-cyan-950 border border-cyan-800 text-cyan-300 text-[10px] font-mono">Transducer / Sensor</span>
+          <span class="px-2 py-0.5 rounded bg-amber-950 border border-amber-800 text-amber-300 text-[10px] font-mono">Signal Conditioning</span>
+        `;
+      }
+    }
+
+    function simulatePhotoDrop() {
+      alert("Simulated Computer Vision: Workbench photo scanned successfully! Detected ESP32, DHT22 sensor, and 10kΩ pull-up resistor. No short circuits identified.");
+    }
+
+    // Module 2 Components Data
+    const componentsData = {
+      esp32: {
+        name: "ESP32 DevKit V1 (30-Pin NodeMCU)",
+        cat: "Category: SoC System-on-Chip",
+        volt: "3.3V Logic (5V Vin via LDO)",
+        role: "Acts as the central processing unit and edge node. It reads raw digital signals from sensors, applies calibration algorithms, and provides serial debug feedback to the computer terminal.",
+        caution: "GPIO pins are NOT 5V tolerant! Applying 5V directly to GPIO4, GPIO21, etc., will permanently damage the silicon gate oxide layer.",
+        pins: [
+          { num: "PIN 1", label: "3V3", role: "Power Out", col: "text-emerald-400" },
+          { num: "PIN 2", label: "GND", role: "Ground", col: "text-slate-400" },
+          { num: "PIN 4", label: "GPIO 4", role: "Data In", col: "text-teal-400" },
+          { num: "PIN 15", label: "VIN", role: "5V Input", col: "text-sky-400" }
+        ]
+      },
+      dht22: {
+        name: "DHT22 / AM2302 High-Precision Digital Sensor",
+        cat: "Category: Environmental Transducer",
+        volt: "3.3V - 5.5V DC",
+        role: "Measures ambient relative humidity with capacitive polymer elements and temperature with an internal NTC thermistor. Communicates via custom single-bus handshake.",
+        caution: "Never sample faster than once every 2 seconds (0.5 Hz). Continuous fast polling causes self-heating of the thermistor and false temperature spikes.",
+        pins: [
+          { num: "PIN 1", label: "VCC", role: "3.3V-5V", col: "text-emerald-400" },
+          { num: "PIN 2", label: "SDA", role: "Data Bus", col: "text-teal-400" },
+          { num: "PIN 3", label: "NC", role: "Not Connected", col: "text-slate-500" },
+          { num: "PIN 4", label: "GND", role: "Ground", col: "text-slate-400" }
+        ]
+      },
+      resistor: {
+        name: "10kΩ 1/4W Metal Film Resistor",
+        cat: "Category: Passive Linear Component",
+        volt: "Max 250V Rating",
+        role: "Provides pull-up biasing on the open-drain sensor communication bus, ensuring the line stays at Logic HIGH when idle and preventing spurious capacitive noise triggers.",
+        caution: "Selecting too small a resistor (<1kΩ) causes excessive current draw when the sensor pulls LOW; selecting too large (>100kΩ) causes slow signal rise times.",
+        pins: [
+          { num: "TERM 1", label: "VCC Rail", role: "3.3V Supply", col: "text-emerald-400" },
+          { num: "TERM 2", label: "Data Pin", role: "GPIO 4 / Bus", col: "text-amber-400" },
+          { num: "TOLERANCE", label: "±1%", role: "Metal Film", col: "text-sky-400" },
+          { num: "POWER", label: "250mW", role: "Dissipation", col: "text-purple-400" }
+        ]
+      },
+      l298n: {
+        name: "L298N Dual Full-Bridge Motor Driver Module",
+        cat: "Category: High-Current Power Driver",
+        volt: "5V - 35V Motor Power",
+        role: "Isolates delicate 3.3V/5V microcontroller logic from high-voltage DC inductive loads. Controls directional rotation and speed via PWM on enable pins.",
+        caution: "Always ensure common ground (GND) is shared between the external battery and the microcontroller, otherwise inductive noise will crash the CPU.",
+        pins: [
+          { num: "VMS", label: "+12V", role: "Motor VCC", col: "text-rose-400" },
+          { num: "GND", label: "GND", role: "Common Ground", col: "text-slate-400" },
+          { num: "IN1-IN4", label: "Logic", role: "Direction Inputs", col: "text-purple-400" },
+          { num: "ENA/ENB", label: "PWM", role: "Speed Control", col: "text-sky-400" }
+        ]
+      }
+    };
+
+    function selectComponent(key) {
+      document.querySelectorAll('[id^="comp-item-"]').forEach(el => {
+        el.classList.remove('border-teal-500/50');
+        el.classList.add('border-slate-800');
+      });
+      const activeEl = document.getElementById('comp-item-' + key);
+      if (activeEl) {
+        activeEl.classList.remove('border-slate-800');
+        activeEl.classList.add('border-teal-500/50');
+      }
+
+      const d = componentsData[key];
+      if (!d) return;
+
+      document.getElementById('comp-detail-name').innerText = d.name;
+      document.getElementById('comp-detail-category').innerText = d.cat;
+      document.getElementById('comp-detail-volt').innerText = d.volt;
+      document.getElementById('comp-detail-role').innerText = d.role;
+      document.getElementById('comp-detail-caution').innerText = d.caution;
+
+      const pinsHtml = d.pins.map(p => `
+        <div class="p-2 rounded bg-slate-900 border border-slate-800 text-center">
+          <span class="text-slate-500 block text-[9px]">${p.num}</span>
+          <strong class="${p.col}">${p.label}</strong>
+          <span class="text-[9px] text-slate-400 block">${p.role}</span>
+        </div>
+      `).join('');
+      document.getElementById('comp-detail-pins').innerHTML = pinsHtml;
+    }
+
+    // Module 3 Process Step Guide
+    const stepsData = {
+      1: {
+        title: "Power Rail Initialization",
+        desc: "1. Distribute regulated 3.3V and Common GND across breadboard rails.<br>2. Confirm with a multimeter that the red bus measures 3.28V - 3.32V.<br>3. Turn off DC power before inserting sensitive ICs."
+      },
+      2: {
+        title: "Sensor Wire Harness Assembly",
+        desc: "1. Seat the DHT22 module firmly across rows 10–14 of the breadboard.<br>2. Run a Red jumper from DHT22 Pin 1 to the Red 3.3V breadboard rail.<br>3. Run a Black jumper from DHT22 Pin 4 to the Blue GND breadboard rail.<br>4. Run a Yellow jumper from DHT22 Pin 2 (Data) to ESP32 Pin GPIO 4 (Row 22)."
+      },
+      3: {
+        title: "Pull-up Resistor Insertion",
+        desc: "1. Insert the 10kΩ resistor leads between DHT22 Pin 2 (Data) and Pin 1 (3.3V VCC).<br>2. Double-check that leads do not short adjacent metallic rows.<br>3. Trim excess lead length if necessary."
+      },
+      4: {
+        title: "Firmware Flash & Baud Config",
+        desc: "1. Connect ESP32 via Micro-USB to PC.<br>2. Select Board: 'ESP32 Dev Module' and COM Port.<br>3. Upload firmware and open Serial Monitor at 115200 baud."
+      }
+    };
+
+    function selectStep(num) {
+      document.getElementById('step-active-num').innerText = `STAGE ${num} OF 5`;
+      document.getElementById('step-active-title').innerText = stepsData[num].title;
+      document.getElementById('step-active-desc').innerHTML = stepsData[num].desc;
+
+      document.querySelectorAll('[id^="step-nav-"]').forEach((el, idx) => {
+        if (idx + 1 === num) {
+          el.classList.add('border-sky-500');
+          el.classList.remove('border-slate-800');
+        } else {
+          el.classList.remove('border-sky-500');
+          el.classList.add('border-slate-800');
+        }
+      });
+    }
+
+    function advanceStep() {
+      alert("Checkpoint Verified! Advancing to Step 3: Pull-up Resistor Insertion.");
+      selectStep(3);
+    }
+
+    // Module 4 Mistake Journal
+    const mistakesData = {
+      1: {
+        id: "INCIDENT FORENSICS #MJ-084",
+        title: "Sensor Read Timeout (NaN Readings)",
+        symptom: "ESP32 boots normally, but Serial Monitor displays continuous 'Failed to read from DHT sensor! Returning NaN'.",
+        cause: "The DHT22 data line requires an open-drain pull-up. The student omitted the 10kΩ resistor, causing the data pin to float. Consequently, the start transmission pulse sent by the ESP32 was never acknowledged by the sensor.",
+        resolution: "1. Insert a 10kΩ resistor across DHT22 Pin 1 (3.3V) and Pin 2 (Data).<br>2. Add a 2-second initial warm-up delay in setup() before calling dht.readTemperature()."
+      },
+      2: {
+        id: "INCIDENT FORENSICS #MJ-085",
+        title: "ESP32 Overheating & Bootloop Reset",
+        symptom: "Controller restarts repeatedly every 400ms whenever Wi-Fi connects: 'rst:0x10 (RTCWDT_RTC_RESET)'.",
+        cause: "Wi-Fi radio transmission requires 250mA peak current spikes. The USB cable/port was delivering insufficient current (<150mA), triggering the internal Brownout Detector (BOD).",
+        resolution: "1. Switch to a high-gauge USB cable or add a 470µF bulk electrolytic capacitor across 3.3V and GND rails to absorb current surges.<br>2. Avoid powering from unpowered USB hub."
+      },
+      3: {
+        id: "INCIDENT FORENSICS #MJ-086",
+        title: "Garbled Serial Baud Characters",
+        symptom: "Serial monitor displays unreadable symbols ('␀␀') instead of sensor telemetry.",
+        cause: "Baud rate mismatch. Firmware was compiled with Serial.begin(115200), while the terminal monitor was set to default 9600 baud.",
+        resolution: "Change Arduino IDE Serial Monitor dropdown from 9600 to 115200 baud to match the hardware UART clock."
+      }
+    };
+
+    function selectMistake(num) {
+      const m = mistakesData[num];
+      if (!m) return;
+      document.getElementById('mistake-detail-id').innerText = m.id;
+      document.getElementById('mistake-detail-title').innerText = m.title;
+      document.getElementById('mistake-detail-symptom').innerText = m.symptom;
+      document.getElementById('mistake-detail-cause').innerText = m.cause;
+      document.getElementById('mistake-detail-resolution').innerHTML = m.resolution;
+
+      document.querySelectorAll('[id^="mistake-item-"]').forEach((el, idx) => {
+        if (idx + 1 === num) {
+          el.classList.add('border-amber-500/60');
+          el.classList.remove('border-slate-800');
+        } else {
+          el.classList.remove('border-amber-500/60');
+          el.classList.add('border-slate-800');
+        }
+      });
+    }
+
+    function addNewMistakePrompt() {
+      const sym = prompt("Describe the lab error symptom (e.g., motor vibrating but not rotating):");
+      if (sym) {
+        alert("AI Forensics: Mistake logged! Potential Cause: Motor driver phase wiring inverted or insufficient battery voltage (<7V). Resolution added to your journal.");
+      }
+    }
+
+    // Module 5 After Lab Chart
+    let afterLabChartInstance = null;
+    function initAfterLabChart() {
+      if (afterLabChartInstance) return;
+      const ctx = document.getElementById('afterLabChart');
+      if (!ctx) return;
+
+      afterLabChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['1.0V', '2.0V', '3.0V', '4.0V', '5.0V'],
+          datasets: [
+            {
+              label: 'Experimental Current (mA)',
+              data: [4.8, 9.7, 14.4, 19.1, 24.2],
+              borderColor: '#22c55e',
+              backgroundColor: 'rgba(34, 197, 94, 0.1)',
+              borderWidth: 2.5,
+              tension: 0.2,
+              fill: true,
+              pointBackgroundColor: '#22c55e',
+              pointRadius: 5
+            },
+            {
+              label: 'Theoretical Current (mA)',
+              data: [5.0, 10.0, 15.0, 20.0, 25.0],
+              borderColor: '#6366f1',
+              borderDash: [5, 5],
+              borderWidth: 2,
+              pointRadius: 4,
+              pointBackgroundColor: '#6366f1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#94a3b8', font: { size: 11 } }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#94a3b8', font: { size: 10 } },
+              title: { display: true, text: 'Voltage (V)', color: '#64748b' }
+            },
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#94a3b8', font: { size: 10 } },
+              title: { display: true, text: 'Current (mA)', color: '#64748b' }
+            }
+          }
+        }
+      });
+    }
+
+    function calculateLabData() {
+      alert("Observation calculations updated! Mean error deviation is 3.87%, perfectly within standard university 5% tolerance.");
+    }
+
+    function exportLabReport() {
+      alert("Generating comprehensive lab record PDF: includes Aim, Apparatus, Circuit Diagram, Observation Table, Calculations, and Inferred Results.");
+    }
+
+    // Module 6 Viva Cards
+    const vivaCardsData = {
+      1: {
+        cat: "EXAMINER SIMULATION — TARGETING MISTAKE #MJ-084",
+        question: "\"Why did your sensor return NaN before adding a pull-up resistor?\"",
+        answer: "\"The DHT22 single-wire protocol utilizes an open-drain output transistor. An open-drain pin can actively pull the signal line to GND (Logic LOW), but cannot pull it HIGH on its own. Without an external 10kΩ pull-up resistor to the 3.3V rail, the line remains in a floating, high-impedance state. Consequently, the microcontroller cannot detect the 80µs initial LOW and 80µs HIGH handshake response from the sensor, leading to a timeout exception and returning NaN.\"",
+        followup: "\"Could you have used the microcontroller's internal pull-up resistor instead of an external one? Why might an internal 50kΩ pull-up fail at longer wire lengths?\""
+      },
+      2: {
+        cat: "EXAMINER SIMULATION — CONCEPTUAL FOUNDATIONS",
+        question: "\"What is the difference between capacitive and resistive humidity sensing?\"",
+        answer: "\"A capacitive sensor measures changes in electrical permittivity of a dielectric polymer layer when moisture is absorbed, offering a linear, temperature-stable response from 0–100% RH. A resistive sensor measures electrical impedance changes in an electrolytic or conductive substrate, which is more prone to contamination and chemical drift.\"",
+        followup: "\"How do you compensate for temperature dependency when calculating relative humidity?\""
+      },
+      3: {
+        cat: "EXAMINER SIMULATION — HARDWARE INTERFACING TRAPS",
+        question: "\"How does 3.3V vs 5V logic level difference affect signal integrity over long wires?\"",
+        answer: "\"Driving a 3.3V input pin with a 5V signal can forward-bias internal ESD protection diodes, leading to thermal latch-up and destruction. Conversely, sending 3.3V into a 5V TTL/CMOS input may not reliably cross the high-level input threshold (VIH, typically 0.7*VDD = 3.5V for CMOS), leading to intermittent communication dropouts.\"",
+        followup: "\"Draw a simple bi-directional logic level shifter using a single N-channel MOSFET and two pull-up resistors.\""
+      }
+    };
+
+    function selectVivaCard(num) {
+      const v = vivaCardsData[num];
+      if (!v) return;
+      document.getElementById('viva-card-category').innerText = v.cat;
+      document.getElementById('viva-card-question').innerText = v.question;
+      document.getElementById('viva-card-answer').innerText = v.answer;
+      document.getElementById('viva-card-followup').innerText = v.followup;
+
+      document.querySelectorAll('[id^="viva-item-"]').forEach((el, idx) => {
+        if (idx + 1 === num) {
+          el.classList.add('border-purple-500/60');
+          el.classList.remove('border-slate-800');
+        } else {
+          el.classList.remove('border-purple-500/60');
+          el.classList.add('border-slate-800');
+        }
+      });
+    }
+
+    let currentVivaIdx = 1;
+    function generateNextVivaQuestion() {
+      currentVivaIdx = (currentVivaIdx % 3) + 1;
+      selectVivaCard(currentVivaIdx);
+    }
+
+    function toggleVivaAnswer() {
+      const ans = document.getElementById('viva-card-answer');
+      if (ans.style.filter === 'blur(6px)') {
+        ans.style.filter = 'none';
+      } else {
+        ans.style.filter = 'blur(6px)';
+      }
+    }
+
+    // Module 7 Personal Progress Radar
+    let radarChartInstance = null;
+    function initRadarChart() {
+      if (radarChartInstance) return;
+      const ctx = document.getElementById('progressRadarChart');
+      if (!ctx) return;
+
+      radarChartInstance = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels: [
+            'Circuit Wiring',
+            'Datasheet Reading',
+            'Oscilloscope Tuning',
+            'Error Math',
+            'Viva Defense',
+            'Grounding / Noise'
+          ],
+          datasets: [{
+            label: 'Current Competency',
+            data: [92, 85, 78, 88, 82, 61],
+            fill: true,
+            backgroundColor: 'rgba(244, 63, 94, 0.2)',
+            borderColor: '#f43f5e',
+            pointBackgroundColor: '#f43f5e',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: '#f43f5e'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            r: {
+              angleLines: { color: 'rgba(255, 255, 255, 0.08)' },
+              grid: { color: 'rgba(255, 255, 255, 0.08)' },
+              pointLabels: { color: '#94a3b8', font: { size: 10 } },
+              ticks: { display: false, max: 100 }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
